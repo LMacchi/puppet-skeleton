@@ -1,12 +1,12 @@
 ## Puppet Skeleton Usage
 
-In your development workstation:
+In your development workstation, get the path to the module_skeleton_dir:
 ```
 [root@agent1 ~]# puppet agent --configprint module_skeleton_dir
 /opt/puppetlabs/puppet/cache/puppet-module/skeleton
 ```
 
-Clone this repo:
+Clone this repo using that path:
 
 ```
 [root@agent1 ~] git clone https://github.com/LMacchi/puppet-skeleton /opt/puppetlabs/puppet/cache/puppet-module/skeleton
