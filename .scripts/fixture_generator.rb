@@ -19,16 +19,20 @@ o = OptionParser.new do |opts|
   opts.on('-o [/path/to/new/fixtures.yml]', '--outfile [/path/to/new/fixtures.yml]', "Path to new fixtures.yml. Defaults to module/.fixtures.yml") do |o|
     options[:outfile] = o
   end
+  opts.on('-f', '--force', 'Force overwrite of fixtures.yml file') do |o|
+    options[:force] = o
+  end
   opts.on('-h', '--help', 'Display this help') do
     puts opts
     $opts = opts
-    exit 0
+    exit 0 
   end
 end
 
 o.parse!
 
 control_repo = options[:path]
+puppetfile = File.expand_path('./Puppetfile', control_repo)
 environment_conf = File.expand_path('./environment.conf', control_repo)
 fixtures_file = File.expand_path('.fixtures.yml', control_repo)
 outfile = options[:output] || "#{control_repo}/.fixtures.yml"
@@ -46,8 +50,13 @@ unless File.directory?(control_repo)
   exit 2
 end
 
-if File.exists?(fixtures_file)
-  puts "ERROR: #{fixtures_file} already exists. Remove or use outfile argument"
+unless File.exists?(puppetfile)
+  puts "ERROR: Puppetfile does not exist in #{control_repo}"
+  exit 2
+end
+
+if File.exists?(fixtures_file) and !options[:force]
+  puts "ERROR: #{fixtures_file} already exists. Remove, use outfile argument or force."
   puts o
   exit 2
 end
@@ -108,7 +117,7 @@ if File.exists?(environment_conf)
   # If so, split the modulepath values and return a symlink
   if environment_config['modulepath']
     environment_config['modulepath'] = environment_config['modulepath'].split(':')
-
+  
     code_dirs = environment_config['modulepath']
     code_dirs.delete_if { |dir| dir[0] == '$'}
     code_dirs.each do |dir|

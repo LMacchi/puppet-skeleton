@@ -35,31 +35,10 @@ task :test do
   end
 end
 
-desc 'Run unit tests'
-task :unit do
-  Rake::Task[:spec_prep].invoke
-  Rake::Task[:spec].invoke
-end
-
-desc 'Run lint test'
-task :lint do
-  Rake::Task[:lint].invoke
-  Rake::Task[:metadata_lint].invoke
-end
-
-desc 'Run Puppet validate'
-task :validate do
-  Rake::Task[:validate].invoke
-end
-
 desc 'Create fixtures.yml from Puppetfile'
 task :fixtures do
-  sh ".scripts/fixtures_generate.rb -p ." 
-end
-
-desc 'Run integration test'
-task :integ do
-  Rake::Task[:integration].invoke
+  puts "Warning: Overwriting .fixtures.yml"
+  sh "#{Dir.pwd}/.scripts/fixture_generator.rb -p #{Dir.pwd} -d -f"
 end
 
 desc 'Install git hooks'
@@ -76,3 +55,22 @@ task :install_git_hooks do
   end
   FileUtils::touch '.git_hooks_installed'
 end
+
+# remove undesired rake tasks
+task :build => []; Rake::Task[:build].clear
+task :clean => []; Rake::Task[:clean].clear
+task :coverage => []; Rake::Task[:coverage].clear
+task :beaker => []; Rake::Task[:beaker].clear
+task :beaker_nodes => []; Rake::Task[:beaker_nodes].clear
+task 'beaker:sets' => []; Rake::Task['beaker:sets'].clear
+task 'beaker:ssh' => []; Rake::Task['beaker:ssh'].clear
+task :rubocop => []; Rake::Task[:rubocop].clear
+task 'rubocop:auto_correct' => []; Rake::Task['rubocop:auto_correct'].clear
+task 'check:dot_underscore' => []; Rake::Task['check:dot_underscore'].clear
+task 'check:git_ignore' => []; Rake::Task['check:git_ignore'].clear
+task 'check:symlinks' => []; Rake::Task['check:symlinks'].clear
+task 'check:test_file' => []; Rake::Task['check:test_file'].clear
+task :compute_dev_version  => []; Rake::Task[:compute_dev_version].clear
+
+task :default => []; Rake::Task[:default].clear
+task :default => :test
