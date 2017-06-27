@@ -6,11 +6,10 @@ In your development workstation:
 /opt/puppetlabs/puppet/cache/puppet-module/skeleton
 ```
 
-Go to the module_skeleton_dir and clone this repo:
+Clone this repo:
 
 ```
-[root@agent1 ~]# cd /opt/puppetlabs/puppet/cache/puppet-module/skeleton
-[root@agent1 skeleton] git clone https://github.com/LMacchi/puppet-skeleton
+[root@agent1 ~] git clone https://github.com/LMacchi/puppet-skeleton /opt/puppetlabs/puppet/cache/puppet-module/skeleton
 ```
 
 Done! The skeleton will be used each time a new module gets created:
